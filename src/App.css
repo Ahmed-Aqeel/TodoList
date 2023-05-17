@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+.new-item-form{
+ text-align: center;
+}
+.btn{
+  padding: 4px;
+  border-radius: 4px;
+  margin: 4px;
+}
+.header{
+  padding: 0;
+  margin: 0;
+}
