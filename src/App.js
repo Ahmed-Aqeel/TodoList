@@ -3,6 +3,7 @@ import './App.css';
 import React,{useEffect, useState} from 'react';
 import { NewTodoForm } from './components/NewTodoForm';
 import { TodoList } from './components/TodoList';
+import axios from 'axios';
 function App() {
   
   const [todos,setTodos]=useState(()=>{
@@ -39,6 +40,17 @@ useEffect(()=>{
     })
   }
   
+  const getData=()=>{
+    debugger
+    axios.get('https://jsonplaceholder.typicode.com/todos')
+    .then(res=>{
+      const da=res
+      console.log(da.data[0])
+      console.log(da)
+    })
+    .catch(err=>console.log('Error catching: ',err ))
+    // return <p>{data}</p>
+  }
   return (
     <>
     <NewTodoForm addTodo={addTodo}/>
@@ -46,6 +58,7 @@ useEffect(()=>{
       <h1 className='header'>Todo List</h1>
       
       <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+      <div>{getData()}</div>
     
       </>
   );
