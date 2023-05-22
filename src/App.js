@@ -5,6 +5,7 @@ import { NewTodoForm } from './components/NewTodoForm';
 import { TodoList } from './components/TodoList';
 import axios from 'axios';
 import { TodoItem } from './components/TodoItem';
+import { Route, Routes } from 'react-router-dom';
 function App() {
   
   const [todos,setTodos]=useState(()=>{
@@ -40,44 +41,40 @@ useEffect(()=>{
       return currentTodos.filter(todo=>todo.id !==id)
     })
   }
-  // useEffect(()=>{
-  //   let da
-  //   axios.get('https://jsonplaceholder.typicode.com/todos')
-  //   .then(res=>{
-  //     da=res.data
-  //     console.log(da)
-  //   })
-  //   return(
-  //   <div>{da.map(todo=>{
-  //     <TodoItem id={todo.id} completed={todo.completed} title={todo.title} toggleTodo={toggleTodo} deleteTodo={deleteTodo}/>
-  //   })}</div>
-  // )
-  // },[])
-  // const getData=()=>{
-  //   // debugger
-  // return  axios.get('https://jsonplaceholder.typicode.com/todos')
-  //   .then(res=>{
-  //     const da=res.data
-  //     console.log(da)
-  //     return(
-  //       <div>{da.map(todo=>{
-  //       return  <TodoItem id={todo.id} completed={todo.completed} title={todo.title} toggleTodo={toggleTodo} deleteTodo={deleteTodo}/> 
-  //       })}</div>
-      
-  //     )
-          
-      
-  //   })
-  //   .catch(err=>console.log('Error catching: ',err ))
-  //   // return <p>{data}</p>
-  // }
+  const filterComplete=()=>{
+    // setTodos(currentTodos=>{
+    //   return currentTodos.filter(todo=>todo.completed==true)
+    // }) 
+  }
+  const filterIncomplete=()=>{
+    // setTodos(currentTodos=>{
+    //   return currentTodos.filter(todo=>todo.completed==false)
+    // }) 
+  }
+   useEffect(()=>{
+    let da
+     axios.get('https://jsonplaceholder.typicode.com/todos')
+      .then(res=>{
+       da=res.data
+       console.log(da)
+      setTodos(...todos,da.JSON())
+      })
+      .catch(err=> {console.log('Error:',err)})
+  },[])
   return (
     <>
-    <NewTodoForm addTodo={addTodo}/>
+    <h1 className='header'>Todo List</h1>
+    <div className='links'><a href='/list'>Check Your Todo List</a></div><div><a href='/todoForm'>Add a New Task</a> </div>
+    <Routes>
+      <Route path='/todoForm' element={<NewTodoForm addTodo={addTodo}/>} />
+      <Route path='/list' element={<TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} filterComplete={filterComplete} filterIncomplete={filterIncomplete} />}/>
+      <Route path='*' element={<h3>Welcome to Todo List App</h3>}/>
+    </Routes>
+    {/* <NewTodoForm addTodo={addTodo}/> */}
       
-      <h1 className='header'>Todo List</h1>
       
-      <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+      
+      {/* <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} /> */}
       
     
       </>
