@@ -41,23 +41,24 @@ useEffect(()=>{
       return currentTodos.filter(todo=>todo.id !==id)
     })
   }
-  const filterComplete=()=>{
+  // const filterComplete=()=>{
     // setTodos(currentTodos=>{
     //   return currentTodos.filter(todo=>todo.completed==true)
     // }) 
-  }
-  const filterIncomplete=()=>{
+  // }
+  // const filterIncomplete=()=>{
     // setTodos(currentTodos=>{
     //   return currentTodos.filter(todo=>todo.completed==false)
     // }) 
-  }
+  // }
    useEffect(()=>{
     let da
      axios.get('https://jsonplaceholder.typicode.com/todos')
       .then(res=>{
        da=res.data
-       console.log(da)
-      setTodos(...todos,da.JSON())
+       
+      setTodos(...todos,JSON.parse(da))
+      
       })
       .catch(err=> {console.log('Error:',err)})
   },[])
@@ -67,7 +68,7 @@ useEffect(()=>{
     <div className='links'><a href='/list'>Check Your Todo List</a></div><div><a href='/todoForm'>Add a New Task</a> </div>
     <Routes>
       <Route path='/todoForm' element={<NewTodoForm addTodo={addTodo}/>} />
-      <Route path='/list' element={<TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} filterComplete={filterComplete} filterIncomplete={filterIncomplete} />}/>
+      <Route path='/list' element={<TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo}/>}/>
       <Route path='*' element={<h3>Welcome to Todo List App</h3>}/>
     </Routes>
     {/* <NewTodoForm addTodo={addTodo}/> */}
