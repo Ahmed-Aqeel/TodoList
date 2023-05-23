@@ -13,7 +13,26 @@ function App() {
   if(localvalue==null) return []
   return JSON.parse(localvalue)
   })
-  
+  const [editTaskId,setEditTaskId]=useState(null)
+  const [editTaskTitle,setEditTaskTitle]=useState('')
+  const handleEdit=(id,title)=>{
+    setEditTaskId(id)
+    setEditTaskTitle(title)
+    
+}
+const handleSave=(TaskId)=>{
+    const updatedTodo=todos.map(todo=>{
+        if(todo.id===TaskId){
+            return{...todo,title: editTaskTitle}
+        }
+        return todo
+    })
+    setTodos(updatedTodo)
+    setEditTaskId(null)
+    setEditTaskTitle('')
+  }
+    
+
 useEffect(()=>{
   localStorage.setItem('Items',JSON.stringify(todos))
 },[todos])
@@ -41,16 +60,7 @@ useEffect(()=>{
       return currentTodos.filter(todo=>todo.id !==id)
     })
   }
-  // const filterComplete=()=>{
-    // setTodos(currentTodos=>{
-    //   return currentTodos.filter(todo=>todo.completed==true)
-    // }) 
-  // }
-  // const filterIncomplete=()=>{
-    // setTodos(currentTodos=>{
-    //   return currentTodos.filter(todo=>todo.completed==false)
-    // }) 
-  // }
+ 
    useEffect(()=>{
     let da
      axios.get('https://jsonplaceholder.typicode.com/todos')
@@ -64,20 +74,13 @@ useEffect(()=>{
   },[])
   return (
     <>
-    <h1 className='header'>Todo List</h1>
-    <div className='links'><a href='/list'>Check Your Todo List</a></div><div><a href='/todoForm'>Add a New Task</a> </div>
+    <h1 className='header'>Todo-List</h1>
+    <div className='links'><a className='link' href='/list'>Check Your Todo List</a><a className='link' href='/todoForm'>Add a New Task</a> </div>
     <Routes>
       <Route path='/todoForm' element={<NewTodoForm addTodo={addTodo}/>} />
-      <Route path='/list' element={<TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo}/>}/>
-      <Route path='*' element={<h3>Welcome to Todo List App</h3>}/>
+      <Route path='/list' element={<TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} handleSave={handleSave} handleEdit={handleEdit} editTaskId={editTaskId} editTaskTitle={editTaskTitle} setEditTaskTitle={setEditTaskTitle} />}/>
+      <Route path='*' element={<h3 className='h3'>Welcome to Todo List App</h3>}/>
     </Routes>
-    {/* <NewTodoForm addTodo={addTodo}/> */}
-      
-      
-      
-      {/* <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} /> */}
-      
-    
       </>
   );
 }
